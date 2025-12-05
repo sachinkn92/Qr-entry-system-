@@ -28,27 +28,28 @@ export default function Home() {
   }
 
   return (
-    <div style={{ maxWidth: 640, margin: '40px auto', fontFamily: 'Arial, sans-serif' }}>
-      <h1>QR Entry System — Registration</h1>
-      <form onSubmit={submit} style={{ display: 'grid', gap: 12 }}>
-        <input required placeholder="Full name" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} />
-        <input required type="email" placeholder="Email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} />
-        <input required placeholder="Event name" value={form.event} onChange={e=>setForm({...form, event:e.target.value})} />
-        <button disabled={loading} type="submit">{loading ? 'Registering...' : 'Register'}</button>
+    <div className="container">
+      <h1 className="text-2xl font-semibold mb-4">QR Entry System — Registration</h1>
+
+      <form onSubmit={submit} className="grid gap-3 bg-white p-6 rounded shadow">
+        <input required placeholder="Full name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
+        <input required type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="border p-2 rounded" />
+        <input required placeholder="Event name" value={form.event} onChange={e => setForm({ ...form, event: e.target.value })} className="border p-2 rounded" />
+        <button disabled={loading} type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">{loading ? 'Registering...' : 'Register'}</button>
       </form>
 
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
+      {error && <p className="text-red-600 mt-3">{error}</p>}
 
       {qr && (
-        <div style={{ marginTop: 20 }}>
-          <h2>Saved QR</h2>
-          <img alt="QR code" src={qr} style={{ width: 220, height: 220 }} />
-          <p>Save this QR or check your email (email sending is a stub in this scaffold).</p>
+        <div className="mt-6 bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-medium">Saved QR</h2>
+          <img alt="QR code" src={qr} className="w-56 h-56 my-3" />
+          <p className="text-sm text-gray-600">Save this QR or check your email for your ticket.</p>
         </div>
       )}
 
-      <hr style={{ margin: '24px 0' }} />
-      <p>Admin pages: <a href="/admin">/admin</a> · Scanner: <a href="/scan">/scan</a></p>
+      <hr className="my-6" />
+      <p className="text-sm">Admin pages: <a className="text-blue-600 underline" href="/admin">/admin</a> · Scanner: <a className="text-blue-600 underline" href="/scan">/scan</a> · <a className="text-blue-600 underline" href="/auth/login">Login</a></p>
     </div>
   )
 }

@@ -12,7 +12,6 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/admin' } })
       if (error) throw error
-      // On success the browser is redirected to the provider
     } catch (err) {
       setMessage(err.message || 'Google sign-in failed')
       setLoading(false)
@@ -35,18 +34,20 @@ export default function Login() {
   }
 
   return (
-    <div style={{ maxWidth: 640, margin: '40px auto', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Sign in</h1>
-      <div style={{ display: 'grid', gap: 10 }}>
-        <button onClick={signInWithGoogle} disabled={loading} style={{ padding: '8px 12px' }}>Sign in with Google</button>
+    <div className="container">
+      <div className="bg-white p-6 rounded shadow">
+        <h1 className="text-2xl font-semibold mb-4">Sign in</h1>
+        <div className="grid gap-4">
+          <button onClick={signInWithGoogle} disabled={loading} className="bg-red-600 text-white py-2 px-4 rounded">Sign in with Google</button>
 
-        <form onSubmit={sendMagicLink} style={{ display: 'grid', gap: 8 }}>
-          <label style={{ fontSize: 14 }}>Or sign in with email (magic link)</label>
-          <input type="email" required placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} />
-          <button disabled={loading || !email} type="submit">Send Magic Link</button>
-        </form>
+          <form onSubmit={sendMagicLink} className="grid gap-2">
+            <label className="text-sm">Or sign in with email (magic link)</label>
+            <input type="email" required placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} className="border p-2 rounded" />
+            <button disabled={loading || !email} type="submit" className="bg-green-600 text-white py-2 px-4 rounded">Send Magic Link</button>
+          </form>
 
-        {message && <p style={{ color: 'green' }}>{message}</p>}
+          {message && <p className="text-green-700">{message}</p>}
+        </div>
       </div>
     </div>
   )

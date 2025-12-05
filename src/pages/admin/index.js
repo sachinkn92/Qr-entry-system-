@@ -71,41 +71,50 @@ export default function Admin() {
   }
 
   return (
-    <div style={{ maxWidth: 1000, margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Admin — Attendees</h1>
-      <div style={{ display: 'flex', gap: 20, marginBottom: 12 }}>
-        <div style={{ padding: 12, border: '1px solid #ddd' }}><strong>Total</strong><div>{stats.total}</div></div>
-        <div style={{ padding: 12, border: '1px solid #ddd' }}><strong>Checked-in</strong><div>{stats.checkedIn}</div></div>
-        <div style={{ marginLeft: 'auto' }}>
-          <button onClick={signOut}>Sign out</button>
+    <div className="container">
+      <div className="flex items-start gap-4 mb-4">
+        <h1 className="text-2xl font-semibold">Admin — Attendees</h1>
+        <div className="ml-auto">
+          <button onClick={signOut} className="bg-gray-200 px-3 py-1 rounded">Sign out</button>
+        </div>
+      </div>
+
+      <div className="flex gap-4 mb-4">
+        <div className="p-3 border rounded bg-white">
+          <div className="text-sm text-gray-500">Total</div>
+          <div className="text-lg font-medium">{stats.total}</div>
+        </div>
+        <div className="p-3 border rounded bg-white">
+          <div className="text-sm text-gray-500">Checked-in</div>
+          <div className="text-lg font-medium">{stats.checkedIn}</div>
         </div>
       </div>
 
       {loading ? <p>Loading attendees...</p> : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Name</th>
-              <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Email</th>
-              <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Event</th>
-              <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Checked-in</th>
-              <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendees.map(a => (
-              <tr key={a.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                <td style={{ padding: '8px 4px' }}>{a.name}</td>
-                <td style={{ padding: '8px 4px' }}>{a.email}</td>
-                <td style={{ padding: '8px 4px' }}>{a.event || a.event_id}</td>
-                <td style={{ padding: '8px 4px' }}>{a.used ? new Date(a.used_at).toLocaleString() : '—'}</td>
-                <td style={{ padding: '8px 4px' }}>
-                  <button onClick={() => resend(a.id)}>Resend Ticket</button>
-                </td>
+        <div className="overflow-x-auto bg-white rounded shadow">
+          <table className="min-w-full table-auto">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-3">Name</th>
+                <th className="text-left p-3">Email</th>
+                <th className="text-left p-3">Event</th>
+                <th className="text-left p-3">Checked-in</th>
+                <th className="text-left p-3">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {attendees.map(a => (
+                <tr key={a.id} className="border-t">
+                  <td className="p-3">{a.name}</td>
+                  <td className="p-3">{a.email}</td>
+                  <td className="p-3">{a.event || a.event_id}</td>
+                  <td className="p-3">{a.used ? new Date(a.used_at).toLocaleString() : '—'}</td>
+                  <td className="p-3"><button onClick={() => resend(a.id)} className="text-sm text-blue-600">Resend</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )
