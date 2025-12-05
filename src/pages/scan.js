@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
+import supabase from '../lib/supabaseClient'
 
 export default function Scan() {
+  const router = useRouter()
   const [scanning, setScanning] = useState(false)
   const [result, setResult] = useState(null)
   const [manualToken, setManualToken] = useState('')
   const html5QrRef = useRef(null)
 
   useEffect(() => {
+    async function checkAuth() {
+      const { data } = await supabase.auth.getSession()
+      if (!data?.session) {
+        router.replace('/auth/login')
+        return
+      }
+    }
+    checkAuth()
+
     return () => {
       if (html5QrRef.current && html5QrRef.current.stop) {
         html5QrRef.current.stop().catch(() => {})
@@ -79,7 +91,6 @@ export default function Scan() {
             )}
           </div>
         </div>
-
         <div style={{ width: 380 }}>
           <h3>Manual token input</h3>
           <textarea placeholder="paste token here" rows={6} value={manualToken} onChange={e => setManualToken(e.target.value)} style={{ width: '100%' }} />
@@ -87,6 +98,10 @@ export default function Scan() {
             <button onClick={() => validateToken(manualToken)} disabled={!manualToken}>Validate</button>
           </div>
         </div>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <button onClick={async () => { await supabase.auth.signOut(); router.replace('/auth/login') }}>Sign out</button>
       </div>
 
       {result && (

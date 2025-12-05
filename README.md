@@ -54,6 +54,18 @@ Supabase setup
 	- `SUPABASE_URL` — your Supabase project URL
 	- `SUPABASE_SERVICE_KEY` — the service role key (or a key with write privileges)
 	- `SECRET_KEY` — signing secret for QR tokens
+  
+	Auth (Supabase)
+
+	- To enable Google sign-in, configure the Google provider in your Supabase project's Auth > Providers settings. You will need to provide OAuth client credentials (client ID and secret) in the Supabase dashboard.
+	- Set the following public env vars in your Next.js environment so the frontend can use Supabase Auth:
+		- `NEXT_PUBLIC_SUPABASE_URL` — same as `SUPABASE_URL`
+		- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon/public key
+
+	Login
+
+	- Visit `/auth/login` to sign in. The app supports Google OAuth and email magic-links (both redirect to `/admin` on success).
+
 
 After you set env vars, install dependencies and run the app:
 

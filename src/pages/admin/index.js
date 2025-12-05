@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import supabase from '../../lib/supabaseClient'
 
 export default function Admin() {
@@ -7,6 +8,15 @@ export default function Admin() {
   const [stats, setStats] = useState({ total: 0, checkedIn: 0 })
 
   useEffect(() => {
+    let mounted = true
+    async function checkAuth() {
+      const { data } = await supabase.auth.getSession()
+      if (!data?.session) {
+        router.replace('/auth/login')
+        return
+      }
+    }
+    checkAuth()
     let channel = null
 
     async function fetchInitial() {
@@ -41,6 +51,7 @@ export default function Admin() {
 
     return () => {
       if (channel) channel.unsubscribe()
+      mounted = false
     }
   }, [])
 
@@ -54,12 +65,20 @@ export default function Admin() {
     }
   }
 
+  async function signOut() {
+    await supabase.auth.signOut()
+    router.replace('/auth/login')
+  }
+
   return (
     <div style={{ maxWidth: 1000, margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
       <h1>Admin — Attendees</h1>
       <div style={{ display: 'flex', gap: 20, marginBottom: 12 }}>
         <div style={{ padding: 12, border: '1px solid #ddd' }}><strong>Total</strong><div>{stats.total}</div></div>
         <div style={{ padding: 12, border: '1px solid #ddd' }}><strong>Checked-in</strong><div>{stats.checkedIn}</div></div>
+        <div style={{ marginLeft: 'auto' }}>
+          <button onClick={signOut}>Sign out</button>
+        </div>
       </div>
 
       {loading ? <p>Loading attendees...</p> : (
