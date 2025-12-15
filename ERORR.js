@@ -176,7 +176,43 @@ export default function ManufacturerForm() {
     </div>
   );
 }
-
+try {
+      // backend will add timestamp and hash
+      const res = await axios.post("http://localhost:5000/mfg/products", {
+        companyName: form.companyName,
+        address: form.address,
+        productID: form.productID,
+        productName: form.productName,
+        brand: form.brand
+      });
+      setResult(res.data);
+    } catch (err) {
+      setResult({
+        success: false,
+        error: err.response?.data?.error || err.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };try {
+      // backend will add timestamp and hash
+      const res = await axios.post("http://localhost:5000/mfg/products", {
+        companyName: form.companyName,
+        address: form.address,
+        productID: form.productID,
+        productName: form.productName,
+        brand: form.brand
+      });
+      setResult(res.data);
+    } catch (err) {
+      setResult({
+        success: false,
+        error: err.response?.data?.error || err.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
