@@ -121,42 +121,6 @@ export default function ManufacturerForm() {
                 required
               />
             </label>
-
-                    <form className="form" onSubmit={registerProduct}>
-            <label>
-              Company Name
-              <input
-                type="text"
-                name="companyName"
-                value={form.companyName}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              Address
-              <input
-                type="text"
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              Product ID
-              <input
-                type="text"
-                name="productID"
-                value={form.productID}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-
             <button type="submit" disabled={loading}>
               {loading ? "Registering..." : "Register & Generate QR"}
             </button>
@@ -200,7 +164,25 @@ export default function ManufacturerForm() {
             Lens, customers see the full text.
           </p>
 
-     
+        try {
+      // backend will add timestamp and hash
+      const res = await axios.post("http://localhost:5000/mfg/products", {
+        companyName: form.companyName,
+        address: form.address,
+        productID: form.productID,
+        productName: form.productName,
+        brand: form.brand
+      });
+      setResult(res.data);
+    } catch (err) {
+      setResult({
+        success: false,
+        error: err.response?.data?.error || err.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
           ) : (
             <p className="section-desc">
               Register a product to generate its QR code.
