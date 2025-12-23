@@ -231,6 +231,12 @@ try {
     }
   };
 
+ const registerProduct = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setResult(null);
+
+
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
         if len(nums1) > len(nums2):
